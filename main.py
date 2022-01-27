@@ -17,39 +17,62 @@ class OlympicGames:
 
         return country_lst
         
-    
-
-    def request(self):
-        country_lst = self.get_country_lst()
-        medal_type_lst = ["Gold", "Silver", "Bronze"]
-        number = 1
-
-        input_year = input("Input year: ")
+    def check_year(self, input_year: int):
         if int(input_year) in range(1900, 2017):
             if int(input_year) % 2 == 0:
+                return True
+        
+        print("Wrong year")
+        return False
 
-                input_country = input("Input country: ")
-                if input_country in country_lst:
-                    input_medal_status = input("Input medal type: ")
+    def check_country(self, input_country: str):
+        country_lst = self.get_country_lst()
 
-                for sport_data in self.olympic_games_data:
-                    year = sport_data["Year"]
-                    country = sport_data["NOC"]
-                    if input_year == year and input_country == country:
-                        if sport_data['Medal'] in medal_type_lst:
-                            if input_medal_status == sport_data['Medal']:
-                                name = sport_data["Name"]
-                                sprot = sport_data["Sport"]
-                
-                                print(f"{number}. {name} - {sprot} - {input_medal_status}")
-                                number += 1
+        if input_country in country_lst:
+            return True
 
+        print("Wrong country")
+        return False
+
+    def check_medal(self, input_medal: str):
+        medal_type_lst = ["Gold", "Silver", "Bronze"]
+        if input_medal in medal_type_lst:
+            return True
+        
+        print("Wrong medal type")
+        return False
+
+    def info_print(self, input_year: str, input_country: str,  input_medal_type: str):
+        number = 1
+
+        for sport_data in self.olympic_games_data:
+            if input_year == sport_data["Year"]:
+                if input_country == sport_data["NOC"]:
+                    if input_medal_type == sport_data["Medal"]:
+                        name = sport_data["Name"]
+                        sport = sport_data["Sport"]
+                        print(f"#{number}. {name} - {sport} - {input_medal_type}")
+                        number += 1
+
+
+    def request(self):
+
+        input_year = input("Input year: ")
+        input_country = input("Input country: ")
+        input_medal_type = input("Input medal type: ")
+        if self.check_year(input_year):
+            if self.check_country(input_country):
+                if self.check_medal(input_medal_type):
+                    self.info_print(input_year, input_country, input_medal_type)
+
+    def program_run(self):
+        self.request()
         
 
 
 olympic_games_list = OlympicGames(olympic_games_data)
 
-olympic_games_list.request()
+olympic_games_list.program_run()
 
 
 # {'ID': '809', 
