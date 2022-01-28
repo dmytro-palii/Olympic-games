@@ -1,6 +1,9 @@
 # Написать проект, который спрашивает у пользователя данные о годе олимпиады и стране. Нужно вывести всех золотых медалистов за этот год у этой страны и их количество. В формате:
 # 1. {Имя Фамилия} - {Дисциплина} - {Золото}
 
+# Написать проект, который спрашивает у пользователя данные о годе олимпиады. Нужно вывести на экран информацию о количестве золотых медалистов за этот год у каждой страны и их количество:
+# 1. {Страна} - {Количество золотых медалей}
+
 from data import olympic_games_data
 from pprint import pprint
 
@@ -54,8 +57,44 @@ class OlympicGames:
                         print(f"#{number}. {name} - {sport} - {input_medal_type}")
                         number += 1
 
+    def part2_info_input(self):
+        gold_medals_countries = {}
+        gold_medal_count = 0
+        input_year = input("Input year: ")
+        if self.check_year(input_year):
+            country_lst = self.get_country_lst()
+            for olympic_info in self.olympic_games_data:
+                if olympic_info["Medal"] == "Gold":
+                    country = olympic_info["NOC"]
+                    year = olympic_info["Year"]
+                    for some_country in country_lst:
+                        if country == some_country and input_year == year:
+                            if country not in gold_medals_countries:
+                                gold_medals_countries[country] = {"Gold" : 0}
 
-    def request(self):
+                            gold_medals_countries[country]["Gold"] += 1
+        
+        for country, medals in gold_medals_countries.items():
+            gold_num = medals["Gold"]
+            print(f"# {country} - {gold_num}")
+ 
+# {Страна1 : {"Gold" : количество золотых}, 
+#  Страна2 : {"Gold" : количество золотых},
+# ....
+# }
+
+
+                
+# {Страна1 : {"Bronze" : количество бронзовых, "Bronze" : количество серебрянных, "Gold" : количество золотых}, 
+#  Страна2 : {"Bronze" : количество бронзовых, "Bronze" : количество серебрянных, "Gold" : количество золотых},
+# ....
+# }
+
+
+            
+# 1. {Страна} - {Количество золотых медалей}
+
+    def part1_info_input(self):
 
         input_year = input("Input year: ")
         input_country = input("Input country: ")
@@ -66,7 +105,11 @@ class OlympicGames:
                     self.info_print(input_year, input_country, input_medal_type)
 
     def program_run(self):
-        self.request()
+        choice = int(input("What part of the project do you want to check? (1/2): "))
+        if choice == 1:
+            self.part1_info_input()
+        else:
+            self.part2_info_input()
         
 
 
